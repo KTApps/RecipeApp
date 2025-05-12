@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08B9BD4D2DD2250F0076455D /* AuthenticationTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B9BD4C2DD2250F0076455D /* AuthenticationTemplate.swift */; };
 		08E9F88B2DD1FFCB007AA7EA /* RecipeAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F88A2DD1FFCB007AA7EA /* RecipeAppApp.swift */; };
 		08E9F88D2DD1FFCB007AA7EA /* AddRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F88C2DD1FFCB007AA7EA /* AddRecipe.swift */; };
 		08E9F88F2DD1FFCD007AA7EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08E9F88E2DD1FFCD007AA7EA /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		08B9BD4C2DD2250F0076455D /* AuthenticationTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationTemplate.swift; sourceTree = "<group>"; };
 		08E9F8872DD1FFCB007AA7EA /* RecipeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08E9F88A2DD1FFCB007AA7EA /* RecipeAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAppApp.swift; sourceTree = "<group>"; };
 		08E9F88C2DD1FFCB007AA7EA /* AddRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecipe.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				08E9F8BB2DD20383007AA7EA /* RecipeBooks.swift */,
 				08E9F8BD2DD204CE007AA7EA /* Login.swift */,
 				08E9F8BF2DD204DC007AA7EA /* Signup.swift */,
+				08B9BD4C2DD2250F0076455D /* AuthenticationTemplate.swift */,
 				08E9F88E2DD1FFCD007AA7EA /* Assets.xcassets */,
 				08E9F8902DD1FFCD007AA7EA /* RecipeApp.entitlements */,
 				08E9F8912DD1FFCD007AA7EA /* Preview Content */,
@@ -280,6 +283,7 @@
 				08E9F8C02DD204DC007AA7EA /* Signup.swift in Sources */,
 				08E9F88D2DD1FFCB007AA7EA /* AddRecipe.swift in Sources */,
 				08E9F8B62DD2003C007AA7EA /* TabView.swift in Sources */,
+				08B9BD4D2DD2250F0076455D /* AuthenticationTemplate.swift in Sources */,
 				08E9F8BA2DD202E0007AA7EA /* ViewRecipe.swift in Sources */,
 				08E9F8BE2DD204CE007AA7EA /* Login.swift in Sources */,
 				08E9F88B2DD1FFCB007AA7EA /* RecipeAppApp.swift in Sources */,

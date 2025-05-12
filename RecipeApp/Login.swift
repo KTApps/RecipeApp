@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct Login: View {
+    @State var username: String = ""
+    @State var password: String = ""
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        AuthenticationTemplate(
+            username: $username,
+            password: $password,
+            buttonString: "Log In")
     }
 }
 

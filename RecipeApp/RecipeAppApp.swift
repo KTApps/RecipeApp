@@ -11,7 +11,9 @@ import SwiftUI
 struct RecipeAppApp: App {
     var body: some Scene {
         WindowGroup {
-            Lobby()
+            NavigationStack {
+                Login()
+            }
         }
     }
 }
