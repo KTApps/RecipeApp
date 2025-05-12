@@ -10,7 +10,6 @@ import SwiftUI
 struct Lobby: View {
     var body: some View {
         TabView {
-            
             ViewRecipe()
                 .tabItem {
                     Image(systemName: "fork.knife")
