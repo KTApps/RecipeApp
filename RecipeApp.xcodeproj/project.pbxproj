@@ -8,12 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		08E9F88B2DD1FFCB007AA7EA /* RecipeAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F88A2DD1FFCB007AA7EA /* RecipeAppApp.swift */; };
-		08E9F88D2DD1FFCB007AA7EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F88C2DD1FFCB007AA7EA /* ContentView.swift */; };
+		08E9F88D2DD1FFCB007AA7EA /* AddRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F88C2DD1FFCB007AA7EA /* AddRecipe.swift */; };
 		08E9F88F2DD1FFCD007AA7EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08E9F88E2DD1FFCD007AA7EA /* Assets.xcassets */; };
 		08E9F8932DD1FFCD007AA7EA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08E9F8922DD1FFCD007AA7EA /* Preview Assets.xcassets */; };
 		08E9F89D2DD1FFCD007AA7EA /* RecipeAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F89C2DD1FFCD007AA7EA /* RecipeAppTests.swift */; };
 		08E9F8A72DD1FFCD007AA7EA /* RecipeAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F8A62DD1FFCD007AA7EA /* RecipeAppUITests.swift */; };
 		08E9F8A92DD1FFCD007AA7EA /* RecipeAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F8A82DD1FFCD007AA7EA /* RecipeAppUITestsLaunchTests.swift */; };
+		08E9F8B62DD2003C007AA7EA /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F8B52DD2003C007AA7EA /* TabView.swift */; };
+		08E9F8BA2DD202E0007AA7EA /* ViewRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F8B92DD202E0007AA7EA /* ViewRecipe.swift */; };
+		08E9F8BC2DD20383007AA7EA /* RecipeBooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F8BB2DD20383007AA7EA /* RecipeBooks.swift */; };
+		08E9F8BE2DD204CE007AA7EA /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F8BD2DD204CE007AA7EA /* Login.swift */; };
+		08E9F8C02DD204DC007AA7EA /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F8BF2DD204DC007AA7EA /* Signup.swift */; };
+		08E9F8C22DD207BD007AA7EA /* TextFieldTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9F8C12DD207BD007AA7EA /* TextFieldTemplate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +42,7 @@
 /* Begin PBXFileReference section */
 		08E9F8872DD1FFCB007AA7EA /* RecipeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecipeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08E9F88A2DD1FFCB007AA7EA /* RecipeAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAppApp.swift; sourceTree = "<group>"; };
-		08E9F88C2DD1FFCB007AA7EA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		08E9F88C2DD1FFCB007AA7EA /* AddRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecipe.swift; sourceTree = "<group>"; };
 		08E9F88E2DD1FFCD007AA7EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		08E9F8902DD1FFCD007AA7EA /* RecipeApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RecipeApp.entitlements; sourceTree = "<group>"; };
 		08E9F8922DD1FFCD007AA7EA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -45,6 +51,12 @@
 		08E9F8A22DD1FFCD007AA7EA /* RecipeAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipeAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08E9F8A62DD1FFCD007AA7EA /* RecipeAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAppUITests.swift; sourceTree = "<group>"; };
 		08E9F8A82DD1FFCD007AA7EA /* RecipeAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		08E9F8B52DD2003C007AA7EA /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		08E9F8B92DD202E0007AA7EA /* ViewRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRecipe.swift; sourceTree = "<group>"; };
+		08E9F8BB2DD20383007AA7EA /* RecipeBooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBooks.swift; sourceTree = "<group>"; };
+		08E9F8BD2DD204CE007AA7EA /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		08E9F8BF2DD204DC007AA7EA /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
+		08E9F8C12DD207BD007AA7EA /* TextFieldTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTemplate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +108,13 @@
 			isa = PBXGroup;
 			children = (
 				08E9F88A2DD1FFCB007AA7EA /* RecipeAppApp.swift */,
-				08E9F88C2DD1FFCB007AA7EA /* ContentView.swift */,
+				08E9F8C12DD207BD007AA7EA /* TextFieldTemplate.swift */,
+				08E9F88C2DD1FFCB007AA7EA /* AddRecipe.swift */,
+				08E9F8B52DD2003C007AA7EA /* TabView.swift */,
+				08E9F8B92DD202E0007AA7EA /* ViewRecipe.swift */,
+				08E9F8BB2DD20383007AA7EA /* RecipeBooks.swift */,
+				08E9F8BD2DD204CE007AA7EA /* Login.swift */,
+				08E9F8BF2DD204DC007AA7EA /* Signup.swift */,
 				08E9F88E2DD1FFCD007AA7EA /* Assets.xcassets */,
 				08E9F8902DD1FFCD007AA7EA /* RecipeApp.entitlements */,
 				08E9F8912DD1FFCD007AA7EA /* Preview Content */,
@@ -259,8 +277,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08E9F88D2DD1FFCB007AA7EA /* ContentView.swift in Sources */,
+				08E9F8C02DD204DC007AA7EA /* Signup.swift in Sources */,
+				08E9F88D2DD1FFCB007AA7EA /* AddRecipe.swift in Sources */,
+				08E9F8B62DD2003C007AA7EA /* TabView.swift in Sources */,
+				08E9F8BA2DD202E0007AA7EA /* ViewRecipe.swift in Sources */,
+				08E9F8BE2DD204CE007AA7EA /* Login.swift in Sources */,
 				08E9F88B2DD1FFCB007AA7EA /* RecipeAppApp.swift in Sources */,
+				08E9F8BC2DD20383007AA7EA /* RecipeBooks.swift in Sources */,
+				08E9F8C22DD207BD007AA7EA /* TextFieldTemplate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
