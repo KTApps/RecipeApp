@@ -49,7 +49,7 @@ struct AuthenticationTemplate: View {
                 }
                 
                 Spacer()
-                    .frame(height: 230)
+                    .frame(height: 200)
                 
                 if buttonString == "Log In" {
                     NavigationLink {
