@@ -8,26 +8,33 @@
 import SwiftUI
 
 struct Lobby: View {
+    @StateObject var authViewModel: AuthViewModel
     var body: some View {
-        TabView {
-            ViewRecipe()
-                .tabItem {
-                    Image(systemName: "fork.knife")
+        Group {
+            if authViewModel.currentUser != nil {
+                TabView {
+                    ViewRecipe()
+                        .tabItem {
+                            Image(systemName: "fork.knife")
+                        }
+                    
+                    AddRecipe()
+                        .tabItem {
+                            Image(systemName: "plus")
+                        }
+                    
+                    RecipeBooks()
+                        .tabItem {
+                            Image(systemName: "book")
+                        }
                 }
-            
-            AddRecipe()
-                .tabItem {
-                    Image(systemName: "plus")
-                }
-            
-            RecipeBooks()
-                .tabItem {
-                    Image(systemName: "book")
-                }
+            } else {
+                Login(authViewModel: authViewModel)
+            }
         }
     }
 }
 
 #Preview {
-    Lobby()
+    Lobby(authViewModel: AuthViewModel())
 }

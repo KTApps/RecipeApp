@@ -18,7 +18,7 @@ struct RecipeAppApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                Login()
+                Lobby(authViewModel: AuthViewModel())
             }
         }
     }

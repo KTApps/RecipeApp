@@ -8,16 +8,68 @@
 import SwiftUI
 
 struct Signup: View {
+    
+    @StateObject var authViewModel: AuthViewModel
+    
+    @State var email: String = ""
     @State var username: String = ""
     @State var password: String = ""
+    
     var body: some View {
-        AuthenticationTemplate(
-            username: $username,
-            password: $password,
-            buttonString: "Sign Up")
+        NavigationView {
+            VStack {
+                Spacer()
+                    .frame(height: 200)
+                
+                TextFieldTemplate(
+                    text: $username,
+                    title: "Username",
+                    placeholder: "Enter username")
+                
+                Spacer()
+                    .frame(height: 60)
+                
+                TextFieldTemplate(
+                    text: $email,
+                    title: "Email",
+                    placeholder: "Enter email")
+                
+                Spacer()
+                    .frame(height: 60)
+                
+                TextFieldTemplate(
+                    text: $password,
+                    title: "Password",
+                    placeholder: "Enter password")
+                
+                Spacer()
+                    .frame(height: 60)
+                
+                Button {
+                    Task {
+                        try await authViewModel.signUp(withEmail: email,
+                                                        username: username,
+                                                        password: password)
+                    }
+                } label: {
+                    ZStack {
+                        Capsule()
+                            .frame(width: 300, height: 60)
+                            .foregroundColor(.blue)
+                        Text("Sign Up")
+                            .font(.system(size: 25))
+                            .bold()
+                            .foregroundColor(.white)
+                    }
+                }
+                
+                Spacer()
+            }
+            .padding()
+        }
     }
 }
 
 #Preview {
-    Signup()
+    Signup(authViewModel: AuthViewModel())
 }
