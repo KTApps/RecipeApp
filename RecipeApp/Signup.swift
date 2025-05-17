@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Signup: View {
     
-    @StateObject var authViewModel: AuthViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     @State var email: String = ""
     @State var username: String = ""
@@ -19,7 +19,6 @@ struct Signup: View {
         NavigationView {
             VStack {
                 Spacer()
-                    .frame(height: 200)
                 
                 TextFieldTemplate(
                     text: $username,
@@ -27,7 +26,7 @@ struct Signup: View {
                     placeholder: "Enter username")
                 
                 Spacer()
-                    .frame(height: 60)
+                    .frame(height: 30)
                 
                 TextFieldTemplate(
                     text: $email,
@@ -35,7 +34,7 @@ struct Signup: View {
                     placeholder: "Enter email")
                 
                 Spacer()
-                    .frame(height: 60)
+                    .frame(height: 30)
                 
                 TextFieldTemplate(
                     text: $password,
@@ -43,7 +42,7 @@ struct Signup: View {
                     placeholder: "Enter password")
                 
                 Spacer()
-                    .frame(height: 60)
+                    .frame(height: 100)
                 
                 Button {
                     Task {
@@ -64,6 +63,18 @@ struct Signup: View {
                 }
                 
                 Spacer()
+                    .frame(height: 100)
+                
+                NavigationLink {
+                    Login()
+                        .navigationBarBackButtonHidden(true)
+                } label: {
+                    Text("Click here to Log In")
+                        .font(.system(size: 20))
+                        .foregroundColor(.black)
+                }
+                .padding(.bottom, 20)
+                
             }
             .padding()
         }
@@ -71,5 +82,5 @@ struct Signup: View {
 }
 
 #Preview {
-    Signup(authViewModel: AuthViewModel())
+    Signup()
 }

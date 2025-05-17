@@ -8,14 +8,12 @@
 import SwiftUI
 
 struct Login: View {
-    @StateObject var authViewModel: AuthViewModel
     @State var username: String = ""
     @State var password: String = ""
     var body: some View {
         NavigationView {
             VStack {
                 Spacer()
-                    .frame(height: 200)
                 
                 TextFieldTemplate(
                     text: $username,
@@ -23,7 +21,7 @@ struct Login: View {
                     placeholder: "Enter username")
                 
                 Spacer()
-                    .frame(height: 60)
+                    .frame(height: 30)
                 
                 TextFieldTemplate(
                     text: $password,
@@ -31,10 +29,10 @@ struct Login: View {
                     placeholder: "Enter password")
                 
                 Spacer()
-                    .frame(height: 60)
+                    .frame(height: 100)
                 
                 NavigationLink {
-                    Lobby(authViewModel: authViewModel)
+                    Lobby()
                         .navigationBarBackButtonHidden(true)
                 } label: {
                     ZStack {
@@ -49,25 +47,24 @@ struct Login: View {
                 }
                 
                 Spacer()
-                    .frame(height: 200)
+                    .frame(height: 100)
                 
                 NavigationLink {
-                    Signup(authViewModel: authViewModel)
+                    Signup()
+                        .navigationBarBackButtonHidden(true)
                 } label: {
-                    ZStack {
-                        Text("Click here to Sign Up")
-                            .font(.system(size: 20))
-                            .foregroundColor(.black)
-                    }
+                    Text("Click here to Sign Up")
+                        .font(.system(size: 20))
+                        .foregroundColor(.black)
                 }
-                
-                Spacer()
+                .padding(.bottom, 20)
             }
             .padding()
+            
         }
     }
 }
 
 #Preview {
-    Login(authViewModel: AuthViewModel())
+    Login()
 }

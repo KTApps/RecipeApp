@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Lobby: View {
-    @StateObject var authViewModel: AuthViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
         Group {
             if authViewModel.currentUser != nil {
@@ -29,12 +29,12 @@ struct Lobby: View {
                         }
                 }
             } else {
-                Login(authViewModel: authViewModel)
+                Login()
             }
         }
     }
 }
 
 #Preview {
-    Lobby(authViewModel: AuthViewModel())
+    Lobby()
 }

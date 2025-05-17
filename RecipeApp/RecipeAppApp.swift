@@ -11,15 +11,16 @@ import Firebase
 @main
 struct RecipeAppApp: App {
     
+    @StateObject var authViewModel = AuthViewModel()
+    
     init() {
         FirebaseApp.configure()
     }
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                Lobby(authViewModel: AuthViewModel())
-            }
+            Lobby()
+                .environmentObject(authViewModel)
         }
     }
 }

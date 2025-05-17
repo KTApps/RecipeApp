@@ -9,11 +9,12 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
+@MainActor
 class AuthViewModel: ObservableObject {
     let authRef = Auth.auth()
     let databaseRef = Firestore.firestore()
     var userSession: FirebaseAuth.User? = nil // user in the backend
-    var currentUser: AuthModel? = nil // user in memory (frontend)
+    @Published var currentUser: AuthModel? = nil // user in memory (frontend)
     
     @Published var userExists: Bool = false
     
@@ -26,9 +27,8 @@ class AuthViewModel: ObservableObject {
             
             /// Return if user already exists
             guard userDocSnapshot.isEmpty else {
-                await MainActor.run {
-                    userExists = true
-                }
+                print("user exists")
+                userExists = true
                 return
             }
             
@@ -38,6 +38,7 @@ class AuthViewModel: ObservableObject {
             
             /// Create instance of user in memory
             let userModel = AuthModel(id: user.user.uid, email: email, username: username)
+            currentUser = userModel
             
             /// Add user into Firestore Database in JSON format
             let encodedUser = try Firestore.Encoder().encode(userModel)
@@ -45,11 +46,6 @@ class AuthViewModel: ObservableObject {
             try await userDocRef.setData([
                 "AuthenticationData" : encodedUser
             ])
-            
-            /// Update UI on main thread
-            await MainActor.run {
-                currentUser = userModel
-            }
             
         } catch {
             throw error
