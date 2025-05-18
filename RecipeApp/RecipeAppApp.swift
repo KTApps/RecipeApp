@@ -19,8 +19,7 @@ struct RecipeAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Lobby()
-                .environmentObject(authViewModel)
+            Lobby(authViewModel: authViewModel)
         }
     }
 }

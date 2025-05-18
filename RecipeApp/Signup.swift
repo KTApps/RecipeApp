@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct Signup: View {
-    
-    @EnvironmentObject var authViewModel: AuthViewModel
-    
+    @ObservedObject var authViewModel: AuthViewModel
     @State var email: String = ""
     @State var username: String = ""
     @State var password: String = ""
@@ -66,7 +64,7 @@ struct Signup: View {
                     .frame(height: 100)
                 
                 NavigationLink {
-                    Login()
+                    Login(authViewModel: authViewModel)
                         .navigationBarBackButtonHidden(true)
                 } label: {
                     Text("Click here to Log In")
@@ -82,5 +80,5 @@ struct Signup: View {
 }
 
 #Preview {
-    Signup()
+    Signup(authViewModel: AuthViewModel())
 }

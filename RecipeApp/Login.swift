@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Login: View {
+    @ObservedObject var authViewModel: AuthViewModel
     @State var username: String = ""
     @State var password: String = ""
     var body: some View {
@@ -32,7 +33,7 @@ struct Login: View {
                     .frame(height: 100)
                 
                 NavigationLink {
-                    Lobby()
+                    Lobby(authViewModel: authViewModel)
                         .navigationBarBackButtonHidden(true)
                 } label: {
                     ZStack {
@@ -50,7 +51,7 @@ struct Login: View {
                     .frame(height: 100)
                 
                 NavigationLink {
-                    Signup()
+                    Signup(authViewModel: authViewModel)
                         .navigationBarBackButtonHidden(true)
                 } label: {
                     Text("Click here to Sign Up")
@@ -66,5 +67,5 @@ struct Login: View {
 }
 
 #Preview {
-    Login()
+    Login(authViewModel: AuthViewModel())
 }
