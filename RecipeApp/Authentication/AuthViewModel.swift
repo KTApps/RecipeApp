@@ -13,6 +13,7 @@ import FirebaseFirestore
 class AuthViewModel: ObservableObject {
     let authRef = Auth.auth()
     let databaseRef = Firestore.firestore()
+    let encoder = Firestore.Encoder()
     var userSession: FirebaseAuth.User? = nil // user in the backend
     @Published var currentUser: AuthModel? = nil // user in memory (frontend)
     
@@ -41,7 +42,7 @@ class AuthViewModel: ObservableObject {
             currentUser = userModel
             
             /// Add user into Firestore Database in JSON format
-            let encodedUser = try Firestore.Encoder().encode(userModel)
+            let encodedUser = try encoder.encode(userModel)
             let userDocRef = databaseRef.collection("users").document(userModel.id)
             try await userDocRef.setData([
                 "AuthenticationData" : encodedUser

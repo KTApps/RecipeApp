@@ -13,6 +13,12 @@ struct ViewRecipe: View {
     }
 }
 
+struct RecipeView: View {
+    var body: some View {
+        Text("")
+    }
+}
+
 #Preview {
     ViewRecipe()
 }

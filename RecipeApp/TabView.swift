@@ -18,7 +18,7 @@ struct Lobby: View {
                             Image(systemName: "fork.knife")
                         }
                     
-                    AddRecipe()
+                    AddRecipe(recipeViewModel: RecipeViewModel(authViewModel: authViewModel))
                         .tabItem {
                             Image(systemName: "plus")
                         }

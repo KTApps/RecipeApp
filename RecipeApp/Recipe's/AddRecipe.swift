@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AddRecipe: View {
     
+    let recipeViewModel: RecipeViewModel
+    
     @State var recipeTitle: String = ""
     @State var ingredients: String = ""
     @State var instructions: String = ""
@@ -49,11 +51,36 @@ struct AddRecipe: View {
                 placeholder: "Enter calories")
             
             Spacer()
+                .frame(height: 40)
+            
+            Button {
+                Task {
+                    try await recipeViewModel.updateFirestoreRecipes(with: recipeTitle,
+                                                                     ingredients: ingredients,
+                                                                     instructions: instructions,
+                                                                     calories: calories)
+                }
+                recipeTitle = ""
+                ingredients = ""
+                instructions = ""
+                calories = ""
+            } label: {
+                ZStack {
+                    Capsule()
+                        .frame(width: 300, height: 60)
+                    Text("Add Recipe")
+                        .foregroundColor(.white)
+                        .font(.system(size: 25))
+                        .fontWeight(.bold)
+                }
+            }
+            
+            Spacer()
         }
         .padding()
     }
 }
 
 #Preview {
-    AddRecipe()
+    AddRecipe(recipeViewModel: RecipeViewModel(authViewModel: AuthViewModel()))
 }
