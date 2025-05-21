@@ -11,9 +11,9 @@ struct Lobby: View {
     @ObservedObject var authViewModel: AuthViewModel
     var body: some View {
         Group {
-            if authViewModel.currentUser != nil {
+            if authViewModel.userSession != nil {
                 TabView {
-                    ViewRecipe()
+                    ViewRecipe(authViewModel: authViewModel)
                         .tabItem {
                             Image(systemName: "fork.knife")
                         }

@@ -54,16 +54,18 @@ struct AddRecipe: View {
                 .frame(height: 40)
             
             Button {
-                Task {
-                    try await recipeViewModel.updateFirestoreRecipes(with: recipeTitle,
-                                                                     ingredients: ingredients,
-                                                                     instructions: instructions,
-                                                                     calories: calories)
+                if recipeTitle != "" {
+                    Task {
+                        try await recipeViewModel.updateFirestoreRecipes(with: recipeTitle,
+                                                                         ingredients: ingredients,
+                                                                         instructions: instructions,
+                                                                         calories: calories)
+                        recipeTitle = ""
+                        ingredients = ""
+                        instructions = ""
+                        calories = ""
+                    }
                 }
-                recipeTitle = ""
-                ingredients = ""
-                instructions = ""
-                calories = ""
             } label: {
                 ZStack {
                     Capsule()

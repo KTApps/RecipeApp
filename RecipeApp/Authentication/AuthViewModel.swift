@@ -14,10 +14,29 @@ class AuthViewModel: ObservableObject {
     let authRef = Auth.auth()
     let databaseRef = Firestore.firestore()
     let encoder = Firestore.Encoder()
+    let decoder = Firestore.Decoder()
     var userSession: FirebaseAuth.User? = nil // user in the backend
     @Published var currentUser: AuthModel? = nil // user in memory (frontend)
     
     @Published var userExists: Bool = false
+    
+    @Published var recipeList: [RecipeModel] = []
+    @Published var recipeBookList: [RecipeBookModel] = []
+}
+
+protocol AuthViewModelExtension {
+    var userSession: FirebaseAuth.User? { get }
+    var currentUser: AuthModel? { get }
+    
+    func signUp(withEmail email: String, username: String, password: String) async throws
+    func logIn(withEmail email: String, password: String) async throws
+}
+
+protocol ViewRecipeViewModel {
+    func retrieveRecipeList() async throws
+}
+
+extension AuthViewModel: AuthViewModelExtension {
     
     func signUp(withEmail email: String, username: String, password: String) async throws {
         do {
@@ -52,4 +71,15 @@ class AuthViewModel: ObservableObject {
             throw error
         }
     }
+    
+    func logIn(withEmail email: String, password: String) async throws {
+        do {
+            let user = try await authRef.signIn(withEmail: email, password: password)
+            userSession = user.user
+            try await retrieveRecipeList()
+        } catch {
+            print("func logIn(): User doesn't exist")
+        }
+    }
+    
 }

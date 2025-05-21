@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Login: View {
     @ObservedObject var authViewModel: AuthViewModel
-    @State var username: String = ""
+    @State var email: String = ""
     @State var password: String = ""
     var body: some View {
         NavigationView {
@@ -17,9 +17,9 @@ struct Login: View {
                 Spacer()
                 
                 TextFieldTemplate(
-                    text: $username,
-                    title: "Username",
-                    placeholder: "Enter username")
+                    text: $email,
+                    title: "Email",
+                    placeholder: "Enter email")
                 
                 Spacer()
                     .frame(height: 30)
