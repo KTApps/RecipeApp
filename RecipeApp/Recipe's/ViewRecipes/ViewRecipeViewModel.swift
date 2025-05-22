@@ -12,16 +12,23 @@ import FirebaseFirestore
 
 extension AuthViewModel: ViewRecipeViewModel {
     func retrieveRecipeList() async throws {
-        let userId = currentUser?.id
-        let userRef = databaseRef.collection("users").document(userId!)
-        let recipeListSnapshot = try await userRef.collection("Recipes").getDocuments()
-        guard !recipeListSnapshot.isEmpty else {
-            print("func retrieveRecipeList(): No recipes")
+        guard let userId = currentUser?.id else {
+            print("func retrieveRecipeList(): user not logged in")
             return
         }
-        for recipe in recipeListSnapshot.documents {
-            let decodedRecipe = try decoder.decode(RecipeModel.self, from: recipe)
-            self.recipeList.append(decodedRecipe)
+        let userRef = databaseRef.collection("users").document(userId)
+        do {
+            let recipeListSnapshot = try await userRef.collection("Recipes").getDocuments()
+            guard !recipeListSnapshot.isEmpty else {
+                print("func retrieveRecipeList(): No recipes")
+                return
+            }
+            for recipe in recipeListSnapshot.documents {
+                let decodedRecipe = try Firestore.Decoder().decode(RecipeModel.self, from: recipe)
+                recipeList.append(decodedRecipe)
+            }
+        } catch {
+            throw error
         }
     }
 }

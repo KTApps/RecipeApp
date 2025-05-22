@@ -42,7 +42,7 @@ class RecipeViewModel {
                 print("Recipe exists")
                 return
             }
-            let encodedRecipe = try authViewModel.encoder.encode(recipeModel)
+            let encodedRecipe = try Firestore.Encoder().encode(recipeModel)
             try await userRecipesRef.setData(encodedRecipe)
         } catch {
             throw error

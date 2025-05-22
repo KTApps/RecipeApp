@@ -34,6 +34,23 @@ class RecipeBookViewModel {
         }
         
         /// add recipe book to recipe book list on firestore in the background thread
+        guard let userId = await authViewModel.currentUser?.id else {
+            print("func updateRecipeBooks(): User's not logged in")
+            return
+        }
         
+        let userRef = authViewModel.databaseRef.collection("users").document(userId)
+        let recipeBookRef = userRef.collection("RecipeBooks").document(book)
+        do {
+            let bookSnapshot = try await recipeBookRef.getDocument()
+            guard !bookSnapshot.exists else {
+                print("func updateRecipeBooks(): book already exists")
+                return
+            }
+            let encodedBook = try Firestore.Encoder().encode(recipeBook)
+            try await recipeBookRef.setData(encodedBook)
+        } catch {
+            throw error
+        }
     }
 }

@@ -13,8 +13,6 @@ import FirebaseFirestore
 class AuthViewModel: ObservableObject {
     let authRef = Auth.auth()
     let databaseRef = Firestore.firestore()
-    let encoder = Firestore.Encoder()
-    let decoder = Firestore.Decoder()
     var userSession: FirebaseAuth.User? = nil // user in the backend
     @Published var currentUser: AuthModel? = nil // user in memory (frontend)
     
@@ -34,6 +32,10 @@ protocol AuthViewModelExtension {
 
 protocol ViewRecipeViewModel {
     func retrieveRecipeList() async throws
+}
+
+protocol ViewRecipeBookViewModel {
+    func retrieveRecipeBookList() async throws
 }
 
 extension AuthViewModel: AuthViewModelExtension {
