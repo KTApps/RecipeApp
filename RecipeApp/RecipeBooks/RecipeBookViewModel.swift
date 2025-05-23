@@ -11,11 +11,9 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class RecipeBookViewModel {
-    let recipeState: RecipeState
     let authViewModel: AuthViewModel
-    init(authViewModel: AuthViewModel, recipeState: RecipeState) {
+    init(authViewModel: AuthViewModel) {
         self.authViewModel = authViewModel
-        self.recipeState = recipeState
     }
     
     func updateRecipeBooks(with book: String, recipe: [String]) async throws {
@@ -26,13 +24,13 @@ class RecipeBookViewModel {
         
         /// add recipe book to recipe book list in the main thread for a quick display
         DispatchQueue.main.async {
-            for recBook in self.recipeState.recipeBookList {
+            for recBook in self.authViewModel.recipeBookList {
                 if recBook.bookTitle == book {
                     print("func updateFirestoreRecipeBooks(): book already exists")
                     break
                 }
             }
-            self.recipeState.recipeBookList.append(recipeBook)
+            self.authViewModel.recipeBookList.append(recipeBook)
         }
         
         /// add recipe book to recipe book list on firestore in the background thread

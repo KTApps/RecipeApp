@@ -10,13 +10,13 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-extension RecipeState: ViewRecipeViewModel {
+extension AuthViewModel: ViewRecipeViewModel {
     func retrieveRecipeList() async throws {
-        guard let userId = authViewModel.currentUser?.id else {
+        guard let userId = currentUser?.id else {
             print("func retrieveRecipeList(): user not logged in")
             return
         }
-        let userRef = authViewModel.databaseRef.collection("users").document(userId)
+        let userRef = databaseRef.collection("users").document(userId)
         do {
             let recipeListSnapshot = try await userRef.collection("Recipes").getDocuments()
             guard !recipeListSnapshot.isEmpty else {

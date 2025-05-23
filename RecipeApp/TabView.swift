@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Lobby: View {
     @ObservedObject var authViewModel: AuthViewModel
-    @ObservedObject var recipeState: RecipeState
     var body: some View {
         Group {
             if authViewModel.userSession != nil {
@@ -19,7 +18,7 @@ struct Lobby: View {
                             Image(systemName: "fork.knife")
                         }
                     
-                    AddRecipe(recipeViewModel: RecipeViewModel(authViewModel: authViewModel, recipeState: recipeState))
+                    AddRecipe(recipeViewModel: RecipeViewModel(authViewModel: authViewModel))
                         .tabItem {
                             Image(systemName: "plus")
                         }
@@ -37,5 +36,5 @@ struct Lobby: View {
 }
 
 #Preview {
-    Lobby(authViewModel: AuthViewModel(), recipeState: RecipeState(authViewModel: AuthViewModel()))
+    Lobby(authViewModel: AuthViewModel())
 }
