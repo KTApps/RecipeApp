@@ -11,10 +11,8 @@ import FirebaseFirestore
 
 class RecipeViewModel {
     let authViewModel: AuthViewModel
-    let recipeState: RecipeState
-    init(authViewModel: AuthViewModel, recipeState: RecipeState) {
+    init(authViewModel: AuthViewModel) {
         self.authViewModel = authViewModel
-        self.recipeState = recipeState
     }
     
     func updateFirestoreRecipes(with title: String, ingredients: String, instructions: String, calories: String) async throws {
@@ -25,13 +23,13 @@ class RecipeViewModel {
                                       calories: calories)
         
         DispatchQueue.main.async {
-            for recipe in self.recipeState.recipeList {
+            for recipe in self.authViewModel.recipeList {
                 if title == recipe.title {
                     print("func updateFirestoreRecipes(): recipe already exists")
                     break
                 }
             }
-            self.recipeState.recipeList.append(recipeModel)
+            self.authViewModel.recipeList.append(recipeModel)
         }
         
         guard let userId = await authViewModel.currentUser?.id else {

@@ -7,18 +7,6 @@
 
 import Foundation
 
-@MainActor
-class RecipeState: ObservableObject {
-    
-    let authViewModel: AuthViewModel
-    init(authViewModel: AuthViewModel) {
-        self.authViewModel = authViewModel
-    }
-    
-    @Published var recipeList: [RecipeModel] = []
-    @Published var recipeBookList: [RecipeBookModel] = []
-}
-
 protocol ViewRecipeViewModel {
     func retrieveRecipeList() async throws
 }

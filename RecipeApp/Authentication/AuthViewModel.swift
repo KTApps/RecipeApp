@@ -18,6 +18,8 @@ class AuthViewModel: ObservableObject {
     
     @Published var userExists: Bool = false
     
+    @Published var recipeList: [RecipeModel] = []
+    @Published var recipeBookList: [RecipeBookModel] = []
 }
 
 protocol AuthViewModelExtension {
