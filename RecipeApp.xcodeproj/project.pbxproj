@@ -11,6 +11,7 @@
 		0804BD3F2DDDEAC600125200 /* ViewRecipeBooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0804BD3E2DDDEAC600125200 /* ViewRecipeBooks.swift */; };
 		0804BD412DDDEAE700125200 /* RecipeBookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0804BD402DDDEAE700125200 /* RecipeBookViewModel.swift */; };
 		0804BD452DDDEC2900125200 /* ViewRecipeBookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0804BD442DDDEC2900125200 /* ViewRecipeBookViewModel.swift */; };
+		08446B4A2DE097BE00B43E39 /* RecipeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08446B492DE097BE00B43E39 /* RecipeState.swift */; };
 		0844DD472DD36BF200337669 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0844DD462DD36BF200337669 /* GoogleService-Info.plist */; };
 		0844DD7B2DD380DE00337669 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0844DD7A2DD380DE00337669 /* FirebaseAuth */; };
 		0844DD7D2DD380DE00337669 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0844DD7C2DD380DE00337669 /* FirebaseDatabase */; };
@@ -57,6 +58,7 @@
 		0804BD3E2DDDEAC600125200 /* ViewRecipeBooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRecipeBooks.swift; sourceTree = "<group>"; };
 		0804BD402DDDEAE700125200 /* RecipeBookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeBookViewModel.swift; sourceTree = "<group>"; };
 		0804BD442DDDEC2900125200 /* ViewRecipeBookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRecipeBookViewModel.swift; sourceTree = "<group>"; };
+		08446B492DE097BE00B43E39 /* RecipeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeState.swift; sourceTree = "<group>"; };
 		0844DD462DD36BF200337669 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0844DD822DD3F0AB00337669 /* AuthModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModel.swift; sourceTree = "<group>"; };
 		0844DD862DD3F3E800337669 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 		08AAB8742DDA341900D11919 /* Recipe's */ = {
 			isa = PBXGroup;
 			children = (
+				08446B492DE097BE00B43E39 /* RecipeState.swift */,
 				08AAB8752DDA34F800D11919 /* RecipeModel.swift */,
 				08E9F88C2DD1FFCB007AA7EA /* AddRecipe.swift */,
 				08AAB8772DDA363000D11919 /* RecipeViewModel.swift */,
@@ -387,6 +390,7 @@
 				08AA19652DDA949100907BF6 /* ViewRecipeViewModel.swift in Sources */,
 				08E9F8C22DD207BD007AA7EA /* TextFieldTemplate.swift in Sources */,
 				0844DD832DD3F0AB00337669 /* AuthModel.swift in Sources */,
+				08446B4A2DE097BE00B43E39 /* RecipeState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,8 +18,6 @@ class AuthViewModel: ObservableObject {
     
     @Published var userExists: Bool = false
     
-    @Published var recipeList: [RecipeModel] = []
-    @Published var recipeBookList: [RecipeBookModel] = []
 }
 
 protocol AuthViewModelExtension {
@@ -28,14 +26,6 @@ protocol AuthViewModelExtension {
     
     func signUp(withEmail email: String, username: String, password: String) async throws
     func logIn(withEmail email: String, password: String) async throws
-}
-
-protocol ViewRecipeViewModel {
-    func retrieveRecipeList() async throws
-}
-
-protocol ViewRecipeBookViewModel {
-    func retrieveRecipeBookList() async throws
 }
 
 extension AuthViewModel: AuthViewModelExtension {
@@ -63,7 +53,7 @@ extension AuthViewModel: AuthViewModelExtension {
             currentUser = userModel
             
             /// Add user into Firestore Database in JSON format
-            let encodedUser = try encoder.encode(userModel)
+            let encodedUser = try Firestore.Encoder().encode(userModel)
             let userDocRef = databaseRef.collection("users").document(userModel.id)
             try await userDocRef.setData([
                 "AuthenticationData" : encodedUser

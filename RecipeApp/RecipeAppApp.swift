@@ -12,6 +12,7 @@ import Firebase
 struct RecipeAppApp: App {
     
     @StateObject var authViewModel = AuthViewModel()
+    @StateObject var recipeState = RecipeState(authViewModel: AuthViewModel())
     
     init() {
         FirebaseApp.configure()
@@ -19,7 +20,7 @@ struct RecipeAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Lobby(authViewModel: authViewModel)
+            Lobby(authViewModel: authViewModel, recipeState: recipeState)
         }
     }
 }
