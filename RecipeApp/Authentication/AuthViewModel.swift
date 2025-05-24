@@ -70,9 +70,26 @@ extension AuthViewModel: AuthViewModelExtension {
         do {
             let user = try await authRef.signIn(withEmail: email, password: password)
             userSession = user.user
+            
+            let userRef = databaseRef.collection("users").document(user.user.uid)
+            let doc = try await userRef.getDocument()
+            guard doc.exists else {
+                print("func logIn(): User doc doesnt exist")
+                return
+            }
+            if let data = doc.data(),
+               let authData = data["AuthenticationData"] as? [String: Any] {
+                let username = authData["username"] as? String
+                let userModel = AuthModel(id: user.user.uid, email: email, username: username ?? "")
+                currentUser = userModel
+            } else {
+                print("func logIn(): AuthData doesnt exist")
+            }
+            
             try await retrieveRecipeList()
+            try await retrieveRecipeBookList()
         } catch {
-            print("func logIn(): User doesn't exist")
+            throw error
         }
     }
     
