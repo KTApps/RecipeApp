@@ -15,12 +15,13 @@ class RecipeViewModel {
         self.authViewModel = authViewModel
     }
     
-    func updateFirestoreRecipes(with title: String, ingredients: String, instructions: String, calories: String) async throws {
+    func updateFirestoreRecipes(with title: String, ingredients: String, instructions: String, calories: String, category: String) async throws {
         
         let recipeModel = RecipeModel(title: title,
                                       ingredients: ingredients,
                                       instructions: instructions,
-                                      calories: calories)
+                                      calories: calories,
+                                      category: category)
         
         DispatchQueue.main.async {
             for recipe in self.authViewModel.recipeList {

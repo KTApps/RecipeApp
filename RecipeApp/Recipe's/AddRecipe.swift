@@ -16,6 +16,8 @@ struct AddRecipe: View {
     @State var instructions: String = ""
     @State var calories: String = ""
     
+    @State var category: mealCategory = .breakfast
+    
     var body: some View {
         VStack {
             Spacer()
@@ -51,7 +53,27 @@ struct AddRecipe: View {
                 placeholder: "Enter calories")
             
             Spacer()
-                .frame(height: 40)
+                .frame(height: 60)
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(mealCategory.allCases, id: \.self) { meal in
+                        Button {
+                            category = meal
+                        } label: {
+                            ZStack {
+                                Capsule()
+                                    .frame(width: 80, height: 30)
+                                    .foregroundColor(meal == category ? .blue : .gray)
+                                Text("\(meal)")
+                                    .foregroundColor(.white)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            Spacer()
             
             Button {
                 if recipeTitle != "" {
@@ -59,7 +81,8 @@ struct AddRecipe: View {
                         try await recipeViewModel.updateFirestoreRecipes(with: recipeTitle,
                                                                          ingredients: ingredients,
                                                                          instructions: instructions,
-                                                                         calories: calories)
+                                                                         calories: calories,
+                                                                         category: category.rawValue)
                         recipeTitle = ""
                         ingredients = ""
                         instructions = ""

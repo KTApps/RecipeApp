@@ -12,5 +12,13 @@ struct RecipeModel: Codable {
     let ingredients: String
     let instructions: String
     let calories: String
+    let category: String
 }
 
+enum mealCategory: String, CaseIterable {
+    case breakfast
+    case lunch
+    case snack
+    case dinner
+    case desert
+}
