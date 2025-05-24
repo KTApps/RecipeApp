@@ -32,9 +32,14 @@ struct Login: View {
                 Spacer()
                     .frame(height: 100)
                 
-                NavigationLink {
-                    Lobby(authViewModel: authViewModel)
-                        .navigationBarBackButtonHidden(true)
+                Button {
+                    Task {
+                        try await authViewModel.logIn(withEmail: email, 
+                                                      password: password)
+                        
+                        email = ""
+                        password = ""
+                    }
                 } label: {
                     ZStack {
                         Capsule()
