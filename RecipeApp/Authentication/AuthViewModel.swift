@@ -87,7 +87,6 @@ extension AuthViewModel: AuthViewModelExtension {
             }
             
             try await retrieveRecipeList()
-            try await retrieveRecipeBookList()
         } catch {
             throw error
         }
