@@ -30,7 +30,8 @@ extension AuthViewModel: ViewRecipeBookViewModel {
             
             /// transfer recipe books to memory for faster performance
             for recBook in recipeBooksSnapshot.documents {
-                let decodedRecBook = try Firestore.Decoder().decode(RecipeBookModel.self, from: recBook)
+                let recBookData = recBook
+                let decodedRecBook = try Firestore.Decoder().decode(RecipeBookModel.self, from: recBookData)
                 recipeBookList.append(decodedRecBook)
             }
         } catch {

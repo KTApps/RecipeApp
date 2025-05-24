@@ -24,7 +24,8 @@ extension AuthViewModel: ViewRecipeViewModel {
                 return
             }
             for recipe in recipeListSnapshot.documents {
-                let decodedRecipe = try Firestore.Decoder().decode(RecipeModel.self, from: recipe)
+                let recipeData = recipe.data()
+                let decodedRecipe = try Firestore.Decoder().decode(RecipeModel.self, from: recipeData)
                 recipeList.append(decodedRecipe)
             }
         } catch {
