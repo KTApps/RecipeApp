@@ -13,12 +13,18 @@ import XCTest
 
 final class UnitTesting_practice_Tests: XCTestCase {
 
+    var vm: UnitTesting_practice_viewModel?
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        vm = UnitTesting_practice_viewModel(isPremium: Bool.random())
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        
+        vm = nil
     }
 
     func test_UnitTesting_practice_viewModel_isPremium_shouldBeTrue() {
@@ -36,10 +42,13 @@ final class UnitTesting_practice_Tests: XCTestCase {
     
     func test_UnitTesting_practice_viewModel_appendArray_shouldAppend() {
         // Given
-        let viewModel = UnitTesting_practice_viewModel(isPremium: Bool.random())
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
         
         // When
-        let maxItems: Int = Int.random(in: 0..<100)
+        let maxItems: Int = Int.random(in: 5..<100)
         for _ in 0..<maxItems {
             viewModel.appendArray(with: UUID().uuidString)
         }
@@ -50,10 +59,13 @@ final class UnitTesting_practice_Tests: XCTestCase {
     
     func test_UnitTesting_practice_viewModel_appendArray_shouldntAppendEmptyItems() {
         // Given
-        let viewModel = UnitTesting_practice_viewModel(isPremium: Bool.random())
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
         
         // When
-        let loopCount: Int = Int.random(in: 0..<100)
+        let loopCount: Int = Int.random(in: 5..<100)
         for _ in 0..<loopCount {
             viewModel.appendArray(with: "")
         }
@@ -64,9 +76,12 @@ final class UnitTesting_practice_Tests: XCTestCase {
     
     func test_UnitTesting_practice_viewModel_selectItem_shouldStartAsNil() {
         // Given
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
         
         // When
-        let viewModel = UnitTesting_practice_viewModel(isPremium: Bool.random())
         
         // Then
         XCTAssertNil(viewModel.selectedItem)
@@ -74,10 +89,13 @@ final class UnitTesting_practice_Tests: XCTestCase {
     
     func test_UnitTesting_practice_viewModel_selectedItem_shouldbeNilWhenItemNotFound() {
         // Given
-        let viewModel = UnitTesting_practice_viewModel(isPremium: Bool.random())
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
         
         // When
-        let maxItems: Int = Int.random(in: 0..<10)
+        let maxItems: Int = Int.random(in: 5..<10)
         for _ in 0..<maxItems {
             viewModel.selectItem(item: UUID().uuidString)
         }
@@ -88,10 +106,13 @@ final class UnitTesting_practice_Tests: XCTestCase {
     
     func test_UnitTesting_practice_viewModel_selectedItem_shouldEqualItem() {
         // Given
-        let viewModel = UnitTesting_practice_viewModel(isPremium: Bool.random())
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
         
         // When
-        let loopCount: Int = Int.random(in: 0..<10)
+        let loopCount: Int = Int.random(in: 5..<10)
         var localArray: [String] = []
         
         for _ in 0..<loopCount {
@@ -101,6 +122,7 @@ final class UnitTesting_practice_Tests: XCTestCase {
         }
         
         let randomItem = localArray.randomElement() ?? ""
+        XCTAssertFalse(randomItem.isEmpty)
         viewModel.selectItem(item: randomItem)
         
         // Then
@@ -109,7 +131,10 @@ final class UnitTesting_practice_Tests: XCTestCase {
     
     func test_UnitTesting_practice_viewModel_selectedItem_shouldReturnToNilWhenNewItemIsntFound() {
         // Given
-        let viewModel = UnitTesting_practice_viewModel(isPremium: Bool.random())
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
         
         // When
         let string = UUID().uuidString
@@ -120,5 +145,72 @@ final class UnitTesting_practice_Tests: XCTestCase {
         
         // Then
         XCTAssertEqual(viewModel.selectedItem, nil)
+    }
+    
+    func test_UnitTesting_practice_viewModel_saveItem_shouldThrowDataError_noData() {
+        // Given
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
+        
+        // When
+        let loopCount = Int.random(in: 5..<10)
+        for _ in 0..<loopCount {
+            viewModel.appendArray(with: UUID().uuidString)
+        }
+        
+        // Then
+        do {
+            try viewModel.saveItem(item: "")
+        } catch let error {
+            let returnedError = error as? UnitTesting_practice_viewModel.DataError
+            XCTAssertEqual(returnedError, UnitTesting_practice_viewModel.DataError.noData)
+        }
+    }
+    
+    func test_UnitTesting_practice_viewModel_saveItem_shouldThrowDataError_itemNotFound() {
+        // Given
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
+        
+        // When
+        let loopCount = Int.random(in: 5..<10)
+        for _ in 0..<loopCount {
+            viewModel.appendArray(with: UUID().uuidString)
+        }
+        
+        // Then
+        XCTAssertThrowsError(try viewModel.saveItem(item: UUID().uuidString))
+        XCTAssertThrowsError(try viewModel.saveItem(item: UUID().uuidString), "Should throw itemNotFound error", { error in
+            let returnedError = error as? UnitTesting_practice_viewModel.DataError
+            XCTAssertEqual(returnedError, UnitTesting_practice_viewModel.DataError.itemNotFound)
+        })
+    }
+    
+    func test_UnitTesting_practice_viewModel_saveItem_shouldSaveItem() {
+        // Given
+        guard let viewModel = vm else {
+            XCTFail()
+            return
+        }
+        
+        // When
+        let loopCount = Int.random(in: 5..<10)
+        var itemArray: [String] = []
+        
+        for _ in 0..<loopCount {
+            let string = UUID().uuidString
+            viewModel.appendArray(with: string)
+            itemArray.append(string)
+        }
+        
+        let randomItem = itemArray.randomElement() ?? ""
+        XCTAssertFalse(randomItem.isEmpty)
+        
+        // Then
+        XCTAssertNoThrow(try viewModel.saveItem(item: randomItem))
     }
 }

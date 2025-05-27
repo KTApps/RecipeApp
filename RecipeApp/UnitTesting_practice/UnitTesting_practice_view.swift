@@ -27,6 +27,23 @@ class UnitTesting_practice_viewModel: ObservableObject {
             self.selectedItem = nil
         }
     }
+    
+    func saveItem(item: String) throws {
+        guard !item.isEmpty else {
+            throw DataError.noData
+        }
+        
+        if let foundItem = self.dataArray.first(where: { $0 == item }) {
+            print("saved item: \(foundItem)")
+        } else {
+            throw DataError.itemNotFound
+        }
+    }
+    
+    enum DataError: LocalizedError {
+        case noData
+        case itemNotFound
+    }
 }
 
 struct UnitTesting_practice_view: View {
