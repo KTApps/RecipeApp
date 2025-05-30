@@ -12,8 +12,8 @@ final class signUp_Tests: XCTestCase {
 
     var viewModel: AuthViewModel?
     var mockUserId: [String] = []
-    var mockUserEmails: [String: String] = [:]  // Store userId -> email mapping
-    var mockUserPasswords: [String: String] = [:]  // Store userId -> password mapping
+    var mockUserEmailDict: [String: String] = [:]
+    var mockUserPasswordDict: [String: String] = [:]
     
     /// Create mock details
     let mockEmail = "\(UUID().uuidString)@unitTest.com"
@@ -29,39 +29,28 @@ final class signUp_Tests: XCTestCase {
     @MainActor
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called before the invocation of each test method in the class.
-        /// delete user
         if let viewModel = viewModel {
-            let expectation = XCTestExpectation(description: "Cleanup test data")
-            
+            let expectation = XCTestExpectation(description: "clean firebase")
             Task {
                 do {
                     for userId in mockUserId {
-                        // Delete from database
                         try await viewModel.databaseRef.collection("users").document(userId).delete()
-                        
-                        // Delete from auth
-                        if let email = mockUserEmails[userId],
-                           let password = mockUserPasswords[userId] {
-                            // Sign in with the stored email and password
-                            try await viewModel.authRef.signIn(withEmail: email, password: password)
-                            // Delete the user
-                            try await viewModel.authRef.currentUser?.delete()
-                        }
+                        try await viewModel.authRef.signIn(withEmail: self.mockUserEmailDict[userId] ?? "",
+                                                           password: self.mockUserPasswordDict[userId] ?? "")
+                        try await viewModel.authRef.currentUser?.delete()
                     }
                     expectation.fulfill()
                 } catch {
-                    print("Error in tearDown: \(error.localizedDescription)")
+                    print("Error deleting mock data: \(error)")
                     expectation.fulfill()
                 }
             }
-            
-            // Wait for cleanup to complete with a timeout
             wait(for: [expectation], timeout: 10.0)
         }
     }
-
+    
     @MainActor
-    func test_AuthViewModel_signUp_shouldBeAbleToRunWithMultipleSimultaneousAttemps() async throws {
+    func test_AuthViewModel_signUp_concurrentSignUpsShouldWork() async throws {
         // Given
         guard let viewModel = viewModel else {
             XCTFail("viewModel not initialised")
@@ -70,22 +59,20 @@ final class signUp_Tests: XCTestCase {
         
         // When
         let loopCount = Int.random(in: 2..<3)
-        var errors: [Error] = []
+        var concurrencyErrors: [Error] = []
         await withTaskGroup(of: Void.self) { group in
-            for _ in  0..<loopCount {
+            for _ in 0..<loopCount {
                 group.addTask {
                     do {
                         try await viewModel.signUp(withEmail: self.mockEmail, username: self.mockUsername, password: self.mockPassword)
-                        if let id = await viewModel.userSession?.uid {
-                            await MainActor.run {
-                                self.mockUserId.append(id)
-                                self.mockUserEmails[id] = self.mockEmail  // Store the email
-                                self.mockUserPasswords[id] = self.mockPassword  // Store the password
-                            }
+                        if let id = await viewModel.currentUser?.id {
+                            self.mockUserId.append(id)
+                            self.mockUserEmailDict[id] = self.mockEmail
+                            self.mockUserPasswordDict[id] = self.mockPassword
                         }
                     } catch {
                         await MainActor.run {
-                            errors.append(error)
+                            concurrencyErrors.append(error)
                         }
                     }
                 }
@@ -94,7 +81,7 @@ final class signUp_Tests: XCTestCase {
         }
         
         // Then
-        XCTAssertTrue(errors.isEmpty, "sign up failed with errors: \(errors)")
+        XCTAssertTrue(concurrencyErrors.isEmpty, "Sign up failed with errors: \(concurrencyErrors)")
     }
     
     @MainActor
