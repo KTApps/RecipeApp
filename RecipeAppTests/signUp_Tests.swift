@@ -12,8 +12,8 @@ final class signUp_Tests: XCTestCase {
 
     var viewModel: AuthViewModel?
     var mockUserId: [String] = []
-    var mockUserEmailDict: [String: String] = [:]
-    var mockUserPasswordDict: [String: String] = [:]
+    var mockEmailDict: [String: String] = [:]
+    var mockPasswordDict: [String: String] = [:]
     
     /// Create mock details
     let mockEmail = "\(UUID().uuidString)@unitTest.com"
@@ -30,18 +30,19 @@ final class signUp_Tests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called before the invocation of each test method in the class.
         if let viewModel = viewModel {
-            let expectation = XCTestExpectation(description: "clean firebase")
+            let expectation = XCTestExpectation(description: "Clean firebase")
             Task {
                 do {
                     for userId in mockUserId {
                         try await viewModel.databaseRef.collection("users").document(userId).delete()
-                        try await viewModel.authRef.signIn(withEmail: self.mockUserEmailDict[userId] ?? "",
-                                                           password: self.mockUserPasswordDict[userId] ?? "")
+                        let email = self.mockEmailDict[userId]
+                        let password = self.mockPasswordDict[userId]
+                        try await viewModel.authRef.signIn(withEmail: email ?? "", password: password ?? "")
                         try await viewModel.authRef.currentUser?.delete()
                     }
                     expectation.fulfill()
                 } catch {
-                    print("Error deleting mock data: \(error)")
+                    print("error cleaning firebase")
                     expectation.fulfill()
                 }
             }
@@ -53,12 +54,12 @@ final class signUp_Tests: XCTestCase {
     func test_AuthViewModel_signUp_concurrentSignUpsShouldWork() async throws {
         // Given
         guard let viewModel = viewModel else {
-            XCTFail("viewModel not initialised")
+            XCTFail("ViewModel not initialised")
             return
         }
         
         // When
-        let loopCount = Int.random(in: 2..<3)
+        let loopCount = Int.random(in: 2..<4)
         var concurrencyErrors: [Error] = []
         await withTaskGroup(of: Void.self) { group in
             for _ in 0..<loopCount {
@@ -67,8 +68,8 @@ final class signUp_Tests: XCTestCase {
                         try await viewModel.signUp(withEmail: self.mockEmail, username: self.mockUsername, password: self.mockPassword)
                         if let id = await viewModel.currentUser?.id {
                             self.mockUserId.append(id)
-                            self.mockUserEmailDict[id] = self.mockEmail
-                            self.mockUserPasswordDict[id] = self.mockPassword
+                            self.mockEmailDict[id] = self.mockEmail
+                            self.mockPasswordDict[id] = self.mockPassword
                         }
                     } catch {
                         await MainActor.run {
@@ -81,7 +82,7 @@ final class signUp_Tests: XCTestCase {
         }
         
         // Then
-        XCTAssertTrue(concurrencyErrors.isEmpty, "Sign up failed with errors: \(concurrencyErrors)")
+        XCTAssertTrue(concurrencyErrors.isEmpty, "concurrency failed with errors: \(concurrencyErrors)")
     }
     
     @MainActor
