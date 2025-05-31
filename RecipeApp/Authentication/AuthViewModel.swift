@@ -56,7 +56,7 @@ extension AuthViewModel: AuthViewModelExtension {
             
             /// Add user into Firestore Database in JSON format
             let encodedUser = try Firestore.Encoder().encode(userModel)
-            let userDocRef = databaseRef.collection("users").document(userModel.id)
+            let userDocRef = databaseRef.collection("users").document(user.user.uid)
             try await userDocRef.setData([
                 "AuthenticationData" : encodedUser
             ])
