@@ -16,7 +16,18 @@ class RecipeBookViewModel {
         self.authViewModel = authViewModel
     }
     
+    func threadCheck(in section: String) {
+        if Thread.isMainThread {
+            print("\(section): Main Thread")
+        } else {
+            let thread = Thread.current.description
+            print("\(section) Thread: \(thread)")
+        }
+    }
+    
     func updateRecipeBooks(with book: String, recipe: [String]) async throws {
+        
+        threadCheck(in: "Start of updateRecipeBooks")
         
         /// update local memory with new recipe book
         let recipeBook = RecipeBookModel(bookTitle: book,
@@ -24,6 +35,9 @@ class RecipeBookViewModel {
         
         /// add recipe book to recipe book list in the main thread for a quick display
         DispatchQueue.main.async {
+            
+            self.threadCheck(in: "updating recipeBookList")
+            
             for recBook in self.authViewModel.recipeBookList {
                 if recBook.bookTitle == book {
                     print("func updateFirestoreRecipeBooks(): book already exists")
@@ -33,8 +47,10 @@ class RecipeBookViewModel {
             self.authViewModel.recipeBookList.append(recipeBook)
         }
         
+        threadCheck(in: "after updating recipeBookList")
+        
         /// add recipe book to recipe book list on firestore in the background thread
-        guard let userId = await authViewModel.currentUser?.id else {
+        guard let userId = authViewModel.currentUser?.id else {
             print("func updateRecipeBooks(): User's not logged in")
             return
         }
@@ -49,6 +65,9 @@ class RecipeBookViewModel {
             }
             let encodedBook = try Firestore.Encoder().encode(recipeBook)
             try await recipeBookRef.setData(encodedBook)
+            
+            threadCheck(in: "after RecipeBookViewModel")
+            
         } catch {
             throw error
         }
