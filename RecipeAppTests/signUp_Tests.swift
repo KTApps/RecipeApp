@@ -105,7 +105,13 @@ final class signUp_Tests: XCTestCase {
         /// Add user
         try await viewModel.signUp(withEmail: mockEmail, username: mockUsername, password: mockPassword)
         XCTAssertNotNil(viewModel.userSession)
-        self.mockUserId.append(viewModel.userSession?.uid ?? "")
+        if let id = viewModel.userSession?.uid {
+            self.mockUserId.append(id)
+            self.mockEmailDict[id] = mockEmail
+            self.mockPasswordDict[id] = mockPassword
+        } else {
+            XCTFail("mock id is nil")
+        }
         
         /// Try add user again
         try await viewModel.signUp(withEmail: mockEmail, username: mockUsername, password: mockPassword)
@@ -128,7 +134,13 @@ final class signUp_Tests: XCTestCase {
         // When
         try await viewModel.signUp(withEmail: mockEmail, username: mockUsername, password: mockPassword)
         XCTAssertNotNil(viewModel.userSession)
-        self.mockUserId.append(viewModel.userSession?.uid ?? "")
+        if let id = viewModel.userSession?.uid {
+            self.mockUserId.append(id)
+            self.mockEmailDict[id] = mockEmail
+            self.mockPasswordDict[id] = mockPassword
+        } else {
+            XCTFail("mock id is nil")
+        }
         
         // Then
         XCTAssertEqual(viewModel.userSession?.uid, viewModel.currentUser?.id)
@@ -150,7 +162,13 @@ final class signUp_Tests: XCTestCase {
         /// Add data
         try await viewModel.signUp(withEmail: mockEmail, username: mockUsername, password: mockPassword)
         XCTAssertNotNil(viewModel.userSession)
-        self.mockUserId.append(viewModel.userSession?.uid ?? "")
+        if let id = viewModel.userSession?.uid {
+            self.mockUserId.append(id)
+            self.mockEmailDict[id] = mockEmail
+            self.mockPasswordDict[id] = mockPassword
+        } else {
+            XCTFail("mock id is nil")
+        }
         
         /// Retrieve data
         let userDocSnapshot = try await viewModel.databaseRef.collection("users").document(viewModel.userSession?.uid ?? "").getDocument()

@@ -12,6 +12,9 @@ import FirebaseFirestore
 
 extension AuthViewModel: ViewRecipeViewModel {
     func retrieveRecipeList() async throws {
+        
+        threadCheck(in: "start of ViewRecipeViewModel")
+        
         guard let userId = currentUser?.id else {
             print("func retrieveRecipeList(): user not logged in")
             return
@@ -26,8 +29,16 @@ extension AuthViewModel: ViewRecipeViewModel {
             for recipe in recipeListSnapshot.documents {
                 let recipeData = recipe.data()
                 let decodedRecipe = try Firestore.Decoder().decode(RecipeModel.self, from: recipeData)
-                recipeList.append(decodedRecipe)
+                DispatchQueue.main.async {
+                    
+                    self.threadCheck(in: "updating recipeList")
+                    
+                    self.recipeList.append(decodedRecipe)
+                }
             }
+            
+            threadCheck(in: "after ViewRecipeViewModel")
+            
         } catch {
             throw error
         }

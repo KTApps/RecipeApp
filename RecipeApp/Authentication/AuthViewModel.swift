@@ -9,7 +9,6 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-@MainActor
 class AuthViewModel: ObservableObject {
     let authRef = Auth.auth()
     let databaseRef = Firestore.firestore()
@@ -20,6 +19,15 @@ class AuthViewModel: ObservableObject {
     
     @Published var recipeList: [RecipeModel] = []
     @Published var recipeBookList: [RecipeBookModel] = []
+    
+    func threadCheck(in section: String) {
+        if Thread.isMainThread {
+            print("\(section): Main Thread")
+        } else {
+            let thread = Thread.current.description
+            print("\(section) Thread: \(thread)")
+        }
+    }
 }
 
 protocol AuthViewModelExtension {
@@ -34,6 +42,9 @@ extension AuthViewModel: AuthViewModelExtension {
     
     func signUp(withEmail email: String, username: String, password: String) async throws {
         do {
+            
+            threadCheck(in: "Start of sign up")
+            
             /// Checks if user already has an existing document
             let userDocSnapshot = try await databaseRef.collection("users")
                 .whereField("AuthenticationData.email", isEqualTo: email)
@@ -42,7 +53,12 @@ extension AuthViewModel: AuthViewModelExtension {
             /// Return if user already exists
             guard userDocSnapshot.isEmpty else {
                 print("user exists")
-                userExists = true
+                DispatchQueue.main.async {
+                    
+                    self.threadCheck(in: "updating userExists")
+                    
+                    self.userExists = true
+                }
                 return
             }
             
@@ -52,7 +68,12 @@ extension AuthViewModel: AuthViewModelExtension {
             
             /// Create instance of user in memory
             let userModel = AuthModel(id: user.user.uid, email: email, username: username)
-            currentUser = userModel
+            DispatchQueue.main.async {
+                
+                self.threadCheck(in: "updating currentUser")
+                
+                self.currentUser = userModel
+            }
             
             /// Add user into Firestore Database in JSON format
             let encodedUser = try Firestore.Encoder().encode(userModel)
@@ -61,6 +82,8 @@ extension AuthViewModel: AuthViewModelExtension {
                 "AuthenticationData" : encodedUser
             ])
             
+            threadCheck(in: "after sign up")
+            
         } catch {
             throw error
         }
@@ -68,6 +91,9 @@ extension AuthViewModel: AuthViewModelExtension {
     
     func logIn(withEmail email: String, password: String) async throws {
         do {
+            
+            threadCheck(in: "Start of logIn")
+            
             let user = try await authRef.signIn(withEmail: email, password: password)
             userSession = user.user
             
@@ -81,12 +107,20 @@ extension AuthViewModel: AuthViewModelExtension {
                let authData = data["AuthenticationData"] as? [String: Any] {
                 let username = authData["username"] as? String
                 let userModel = AuthModel(id: user.user.uid, email: email, username: username ?? "")
-                currentUser = userModel
+                DispatchQueue.main.async {
+                    
+                    self.threadCheck(in: "updating currentUser")
+                    
+                    self.currentUser = userModel
+                }
             } else {
                 print("func logIn(): AuthData doesnt exist")
             }
             
             try await retrieveRecipeList()
+            
+            threadCheck(in: "after logIn")
+            
         } catch {
             throw error
         }
