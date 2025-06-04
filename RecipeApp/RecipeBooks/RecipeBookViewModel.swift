@@ -34,7 +34,7 @@ class RecipeBookViewModel {
                                          recipeTitles: recipe)
         
         /// add recipe book to recipe book list in the main thread for a quick display
-        DispatchQueue.main.async {
+        await MainActor.run {
             
             self.threadCheck(in: "updating recipeBookList")
             
