@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct Signup: View {
+    @StateObject var authViewModel = AuthViewModel()
     @ObservedObject var authState: AuthState
     @State var email: String = ""
     @State var username: String = ""
-    @State var password: String = ""
     
     var body: some View {
         NavigationView {
@@ -35,7 +35,7 @@ struct Signup: View {
                     .frame(height: 30)
                 
                 TextFieldTemplate(
-                    text: $password,
+                    text: $authViewModel.textFieldPassword,
                     title: "Password",
                     placeholder: "Enter password")
                 
@@ -43,10 +43,12 @@ struct Signup: View {
                     .frame(height: 100)
                 
                 Button {
-                    Task {
-                        try await authState.signUp(withEmail: email,
-                                                        username: username,
-                                                        password: password)
+                    if $authViewModel.isPasswordValid {
+                        Task {
+                            try await authState.signUp(withEmail: email,
+                                                            username: username,
+                                                            password: $authViewModel.textFieldPassword)
+                        }
                     }
                 } label: {
                     ZStack {
@@ -58,6 +60,7 @@ struct Signup: View {
                             .bold()
                             .foregroundColor(.white)
                     }
+                    .opacity($authViewModel.isPasswordValid ? 1 : 0.5)
                 }
                 
                 Spacer()
