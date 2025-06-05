@@ -10,7 +10,7 @@ import XCTest
 
 final class signUp_Tests: XCTestCase {
 
-    var viewModel: AuthViewModel?
+    var viewModel: AuthState?
     var mockUserId: [String] = []
     var mockEmailDict: [String: String] = [:]
     var mockPasswordDict: [String: String] = [:]
@@ -23,7 +23,7 @@ final class signUp_Tests: XCTestCase {
     @MainActor 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        viewModel = AuthViewModel()
+        viewModel = AuthState()
     }
 
     @MainActor

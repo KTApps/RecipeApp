@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Signup: View {
-    @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject var authState: AuthState
     @State var email: String = ""
     @State var username: String = ""
     @State var password: String = ""
@@ -44,7 +44,7 @@ struct Signup: View {
                 
                 Button {
                     Task {
-                        try await authViewModel.signUp(withEmail: email,
+                        try await authState.signUp(withEmail: email,
                                                         username: username,
                                                         password: password)
                     }
@@ -64,7 +64,7 @@ struct Signup: View {
                     .frame(height: 100)
                 
                 NavigationLink {
-                    Login(authViewModel: authViewModel)
+                    Login(authState: authState)
                         .navigationBarBackButtonHidden(true)
                 } label: {
                     Text("Click here to Log In")
@@ -80,5 +80,5 @@ struct Signup: View {
 }
 
 #Preview {
-    Signup(authViewModel: AuthViewModel())
+    Signup(authState: AuthState())
 }

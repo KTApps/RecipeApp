@@ -10,7 +10,11 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-extension AuthViewModel: ViewRecipeViewModel {
+protocol ViewRecipeViewModel {
+    func retrieveRecipeList() async throws
+}
+
+extension AuthState: ViewRecipeViewModel {
     func retrieveRecipeList() async throws {
         
         threadCheck(in: "start of ViewRecipeViewModel")

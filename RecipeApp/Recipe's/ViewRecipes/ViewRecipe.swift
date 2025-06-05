@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ViewRecipe: View {
-    @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject var authState: AuthState
     var body: some View {
         NavigationView {
             ScrollView {
-                ForEach(authViewModel.recipeList.indices, id: \.self) { index in
-                    let recipe = authViewModel.recipeList[index]
+                ForEach(authState.recipeList.indices, id: \.self) { index in
+                    let recipe = authState.recipeList[index]
                     NavigationLink {
                         RecipeView()
                     } label: {
@@ -35,5 +35,5 @@ struct RecipeView: View {
 }
 
 #Preview {
-    ViewRecipe(authViewModel: AuthViewModel())
+    ViewRecipe(authState: AuthState())
 }
