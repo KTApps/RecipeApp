@@ -10,14 +10,16 @@ import FirebaseAuth
 import FirebaseFirestore
 import Combine
 
+@MainActor
 class AuthViewModel: ObservableObject {
-    let authState: AuthState
-    init(authState: AuthState) {
-        self.authState = authState
-    }
     
     @Published var textFieldPassword: String = ""
     @Published var isPasswordValid: Bool = false
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        passwordChecker()
+    }
     
     func passwordChecker() {
         $textFieldPassword
@@ -27,6 +29,7 @@ class AuthViewModel: ObservableObject {
                 }
                 return false
             }
-            .assign(to: &isPasswordValid)
+            .assign(to: \.isPasswordValid, on: self)
+            .store(in: &cancellables)
     }
 }

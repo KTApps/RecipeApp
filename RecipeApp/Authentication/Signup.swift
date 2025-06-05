@@ -43,11 +43,11 @@ struct Signup: View {
                     .frame(height: 100)
                 
                 Button {
-                    if $authViewModel.isPasswordValid {
+                    if authViewModel.isPasswordValid {
                         Task {
                             try await authState.signUp(withEmail: email,
                                                             username: username,
-                                                            password: $authViewModel.textFieldPassword)
+                                                            password: authViewModel.textFieldPassword)
                         }
                     }
                 } label: {
@@ -60,7 +60,7 @@ struct Signup: View {
                             .bold()
                             .foregroundColor(.white)
                     }
-                    .opacity($authViewModel.isPasswordValid ? 1 : 0.5)
+                    .opacity(authViewModel.isPasswordValid ? 10 : 0.5)
                 }
                 
                 Spacer()
