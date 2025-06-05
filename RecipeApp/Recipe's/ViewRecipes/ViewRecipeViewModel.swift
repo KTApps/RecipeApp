@@ -31,9 +31,9 @@ extension AuthViewModel: ViewRecipeViewModel {
                 let decodedRecipe = try Firestore.Decoder().decode(RecipeModel.self, from: recipeData)
                 await MainActor.run {
                     
-                    self.threadCheck(in: "updating recipeList")
+                    threadCheck(in: "updating recipeList")
                     
-                    self.recipeList.append(decodedRecipe)
+                    recipeList.append(decodedRecipe)
                 }
             }
             

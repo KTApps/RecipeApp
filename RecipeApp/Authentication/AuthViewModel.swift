@@ -55,9 +55,9 @@ extension AuthViewModel: AuthViewModelExtension {
                 print("user exists")
                 await MainActor.run {
                     
-                    self.threadCheck(in: "updating userExists")
+                    threadCheck(in: "updating userExists")
                     
-                    self.userExists = true
+                    userExists = true
                 }
                 return
             }
@@ -70,9 +70,9 @@ extension AuthViewModel: AuthViewModelExtension {
             let userModel = AuthModel(id: user.user.uid, email: email, username: username)
             await MainActor.run {
                 
-                self.threadCheck(in: "updating currentUser")
+                threadCheck(in: "updating currentUser")
                 
-                self.currentUser = userModel
+                currentUser = userModel
             }
             
             /// Add user into Firestore Database in JSON format
@@ -109,9 +109,9 @@ extension AuthViewModel: AuthViewModelExtension {
                 let userModel = AuthModel(id: user.user.uid, email: email, username: username ?? "")
                 await MainActor.run {
                     
-                    self.threadCheck(in: "updating currentUser")
+                    threadCheck(in: "updating currentUser")
                     
-                    self.currentUser = userModel
+                    currentUser = userModel
                 }
             } else {
                 print("func logIn(): AuthData doesnt exist")

@@ -36,15 +36,15 @@ class RecipeViewModel {
         
         await MainActor.run {
             
-            self.threadCheck(in: "updating recipeList")
+            threadCheck(in: "updating recipeList")
             
-            for recipe in self.authViewModel.recipeList {
+            for recipe in authViewModel.recipeList {
                 if title == recipe.title {
                     print("func updateFirestoreRecipes(): recipe already exists")
                     break
                 }
             }
-            self.authViewModel.recipeList.append(recipeModel)
+            authViewModel.recipeList.append(recipeModel)
         }
         
         threadCheck(in: "after updating recipeList")
