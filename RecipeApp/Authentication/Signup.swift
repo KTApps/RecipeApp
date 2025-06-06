@@ -10,7 +10,6 @@ import SwiftUI
 struct Signup: View {
     @StateObject var authViewModel = AuthViewModel()
     @ObservedObject var authState: AuthState
-    @State var email: String = ""
     @State var username: String = ""
     
     var body: some View {
@@ -27,7 +26,7 @@ struct Signup: View {
                     .frame(height: 30)
                 
                 TextFieldTemplate(
-                    text: $email,
+                    text: $authViewModel.textFieldEmail,
                     title: "Email",
                     placeholder: "Enter email")
                 
@@ -43,11 +42,12 @@ struct Signup: View {
                     .frame(height: 100)
                 
                 Button {
-                    if authViewModel.isPasswordValid {
+                    if authViewModel.isPasswordValid && authViewModel.isEmailValid {
                         Task {
-                            try await authState.signUp(withEmail: email,
-                                                            username: username,
-                                                            password: authViewModel.textFieldPassword)
+                            try await authState.signUp(withEmail: authViewModel.textFieldEmail,
+                                                       username: username,
+                                                       password: authViewModel.textFieldPassword)
+                            authViewModel.cancelSubscriptions()
                         }
                     }
                 } label: {
@@ -60,7 +60,7 @@ struct Signup: View {
                             .bold()
                             .foregroundColor(.white)
                     }
-                    .opacity(authViewModel.isPasswordValid ? 10 : 0.5)
+                    .opacity(authViewModel.isPasswordValid && authViewModel.isEmailValid ? 1 : 0.5)
                 }
                 
                 Spacer()
