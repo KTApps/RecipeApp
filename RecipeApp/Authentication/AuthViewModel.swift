@@ -34,7 +34,10 @@ class AuthViewModel: ObservableObject {
                 }
                 return false
             }
-            .assign(to: \.isEmailValid, on: self)
+            .sink(receiveValue: { [weak self] (isEmailValid) in
+                guard let self = self else { return }
+                self.isEmailValid = isEmailValid
+            })
             .store(in: &cancellables)
     }
     
@@ -46,11 +49,10 @@ class AuthViewModel: ObservableObject {
                 }
                 return false
             }
-            .assign(to: \.isPasswordValid, on: self)
+            .sink(receiveValue: { [weak self] (isPasswordValid) in
+                guard let self = self else { return }
+                self.isPasswordValid = isPasswordValid
+            })
             .store(in: &cancellables)
-    }
-    
-    func cancelSubscriptions() {
-        cancellables.removeAll()
     }
 }

@@ -47,7 +47,6 @@ struct Signup: View {
                             try await authState.signUp(withEmail: authViewModel.textFieldEmail,
                                                        username: username,
                                                        password: authViewModel.textFieldPassword)
-                            authViewModel.cancelSubscriptions()
                         }
                     }
                 } label: {
