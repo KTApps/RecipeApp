@@ -11,9 +11,9 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class RecipeBookViewModel {
-    let authViewModel: AuthViewModel
-    init(authViewModel: AuthViewModel) {
-        self.authViewModel = authViewModel
+    let authState: AuthState
+    init(authViewModel: AuthState) {
+        self.authState = authViewModel
     }
     
     func threadCheck(in section: String) {
@@ -38,24 +38,24 @@ class RecipeBookViewModel {
             
             threadCheck(in: "updating recipeBookList")
             
-            for recBook in authViewModel.recipeBookList {
+            for recBook in self.authState.recipeBookList {
                 if recBook.bookTitle == book {
                     print("func updateFirestoreRecipeBooks(): book already exists")
                     break
                 }
             }
-            authViewModel.recipeBookList.append(recipeBook)
+            self.authState.recipeBookList.append(recipeBook)
         }
         
         threadCheck(in: "after updating recipeBookList")
         
         /// add recipe book to recipe book list on firestore in the background thread
-        guard let userId = authViewModel.currentUser?.id else {
+        guard let userId = authState.currentUser?.id else {
             print("func updateRecipeBooks(): User's not logged in")
             return
         }
         
-        let userRef = authViewModel.databaseRef.collection("users").document(userId)
+        let userRef = authState.databaseRef.collection("users").document(userId)
         let recipeBookRef = userRef.collection("RecipeBooks").document(book)
         do {
             let bookSnapshot = try await recipeBookRef.getDocument()

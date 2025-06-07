@@ -107,5 +107,5 @@ struct AddRecipe: View {
 }
 
 #Preview {
-    AddRecipe(recipeViewModel: RecipeViewModel(authViewModel: AuthViewModel()))
+    AddRecipe(recipeViewModel: RecipeViewModel(authState: AuthState()))
 }

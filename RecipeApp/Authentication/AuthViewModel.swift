@@ -2,128 +2,57 @@
 //  AuthViewModel.swift
 //  RecipeApp
 //
-//  Created by Kelvin Mahaja on 13/05/2025.
+//  Created by Kelvin Mahaja on 05/06/2025.
 //
 
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import Combine
 
+@MainActor
 class AuthViewModel: ObservableObject {
-    let authRef = Auth.auth()
-    let databaseRef = Firestore.firestore()
-    var userSession: FirebaseAuth.User? = nil // user in the backend
-    @Published var currentUser: AuthModel? = nil // user in memory (frontend)
     
-    @Published var userExists: Bool = false
+    @Published var textFieldEmail: String = ""
+    @Published var isEmailValid: Bool = false
     
-    @Published var recipeList: [RecipeModel] = []
-    @Published var recipeBookList: [RecipeBookModel] = []
+    @Published var textFieldPassword: String = ""
+    @Published var isPasswordValid: Bool = false
     
-    func threadCheck(in section: String) {
-        if Thread.isMainThread {
-            print("\(section): Main Thread")
-        } else {
-            let thread = Thread.current.description
-            print("\(section) Thread: \(thread)")
-        }
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        emailChecker()
+        passwordChecker()
     }
-}
-
-protocol AuthViewModelExtension {
-    var userSession: FirebaseAuth.User? { get }
-    var currentUser: AuthModel? { get }
     
-    func signUp(withEmail email: String, username: String, password: String) async throws
-    func logIn(withEmail email: String, password: String) async throws
-}
-
-extension AuthViewModel: AuthViewModelExtension {
-    
-    func signUp(withEmail email: String, username: String, password: String) async throws {
-        do {
-            
-            threadCheck(in: "Start of sign up")
-            
-            /// Checks if user already has an existing document
-            let userDocSnapshot = try await databaseRef.collection("users")
-                .whereField("AuthenticationData.email", isEqualTo: email)
-                .getDocuments()
-            
-            /// Return if user already exists
-            guard userDocSnapshot.isEmpty else {
-                print("user exists")
-                await MainActor.run {
-                    
-                    threadCheck(in: "updating userExists")
-                    
-                    userExists = true
+    func emailChecker() {
+        $textFieldEmail
+            .map { (text) -> Bool in
+                if text.contains("@") {
+                    return true
                 }
-                return
+                return false
             }
-            
-            /// Create user in Firebase Authentication
-            let user = try await authRef.createUser(withEmail: email, password: password)
-            userSession = user.user
-            
-            /// Create instance of user in memory
-            let userModel = AuthModel(id: user.user.uid, email: email, username: username)
-            await MainActor.run {
-                
-                threadCheck(in: "updating currentUser")
-                
-                currentUser = userModel
-            }
-            
-            /// Add user into Firestore Database in JSON format
-            let encodedUser = try Firestore.Encoder().encode(userModel)
-            let userDocRef = databaseRef.collection("users").document(user.user.uid)
-            try await userDocRef.setData([
-                "AuthenticationData" : encodedUser
-            ])
-            
-            threadCheck(in: "after sign up")
-            
-        } catch {
-            throw error
-        }
+            .sink(receiveValue: { [weak self] (isEmailValid) in
+                guard let self = self else { return }
+                self.isEmailValid = isEmailValid
+            })
+            .store(in: &cancellables)
     }
     
-    func logIn(withEmail email: String, password: String) async throws {
-        do {
-            
-            threadCheck(in: "Start of logIn")
-            
-            let user = try await authRef.signIn(withEmail: email, password: password)
-            userSession = user.user
-            
-            let userRef = databaseRef.collection("users").document(user.user.uid)
-            let doc = try await userRef.getDocument()
-            guard doc.exists else {
-                print("func logIn(): User doc doesnt exist")
-                return
-            }
-            if let data = doc.data(),
-               let authData = data["AuthenticationData"] as? [String: Any] {
-                let username = authData["username"] as? String
-                let userModel = AuthModel(id: user.user.uid, email: email, username: username ?? "")
-                await MainActor.run {
-                    
-                    threadCheck(in: "updating currentUser")
-                    
-                    currentUser = userModel
+    func passwordChecker() {
+        $textFieldPassword
+            .map { (text) -> Bool in
+                if text.count >= 6 {
+                    return true
                 }
-            } else {
-                print("func logIn(): AuthData doesnt exist")
+                return false
             }
-            
-            try await retrieveRecipeList()
-            
-            threadCheck(in: "after logIn")
-            
-        } catch {
-            throw error
-        }
+            .sink(receiveValue: { [weak self] (isPasswordValid) in
+                guard let self = self else { return }
+                self.isPasswordValid = isPasswordValid
+            })
+            .store(in: &cancellables)
     }
-    
 }

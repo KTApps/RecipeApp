@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct Lobby: View {
-    @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject var authState: AuthState
     var body: some View {
         Group {
-            if authViewModel.userSession != nil {
+            if authState.userSession != nil {
                 TabView {
-                    ViewRecipe(authViewModel: authViewModel)
+                    ViewRecipe(authState: authState)
                         .tabItem {
                             Image(systemName: "fork.knife")
                         }
                     
-                    AddRecipe(recipeViewModel: RecipeViewModel(authViewModel: authViewModel))
+                    AddRecipe(recipeViewModel: RecipeViewModel(authState: authState))
                         .tabItem {
                             Image(systemName: "plus")
                         }
@@ -29,12 +29,12 @@ struct Lobby: View {
                         }
                 }
             } else {
-                Login(authViewModel: authViewModel)
+                Login(authState: authState)
             }
         }
     }
 }
 
 #Preview {
-    Lobby(authViewModel: AuthViewModel())
+    Lobby(authState: AuthState())
 }

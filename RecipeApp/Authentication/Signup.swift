@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct Signup: View {
-    @ObservedObject var authViewModel: AuthViewModel
-    @State var email: String = ""
+    @StateObject var authViewModel = AuthViewModel()
+    @ObservedObject var authState: AuthState
     @State var username: String = ""
-    @State var password: String = ""
     
     var body: some View {
         NavigationView {
@@ -27,7 +26,7 @@ struct Signup: View {
                     .frame(height: 30)
                 
                 TextFieldTemplate(
-                    text: $email,
+                    text: $authViewModel.textFieldEmail,
                     title: "Email",
                     placeholder: "Enter email")
                 
@@ -35,7 +34,7 @@ struct Signup: View {
                     .frame(height: 30)
                 
                 TextFieldTemplate(
-                    text: $password,
+                    text: $authViewModel.textFieldPassword,
                     title: "Password",
                     placeholder: "Enter password")
                 
@@ -43,10 +42,12 @@ struct Signup: View {
                     .frame(height: 100)
                 
                 Button {
-                    Task {
-                        try await authViewModel.signUp(withEmail: email,
-                                                        username: username,
-                                                        password: password)
+                    if authViewModel.isPasswordValid && authViewModel.isEmailValid {
+                        Task {
+                            try await authState.signUp(withEmail: authViewModel.textFieldEmail,
+                                                       username: username,
+                                                       password: authViewModel.textFieldPassword)
+                        }
                     }
                 } label: {
                     ZStack {
@@ -58,13 +59,14 @@ struct Signup: View {
                             .bold()
                             .foregroundColor(.white)
                     }
+                    .opacity(authViewModel.isPasswordValid && authViewModel.isEmailValid ? 1 : 0.5)
                 }
                 
                 Spacer()
                     .frame(height: 100)
                 
                 NavigationLink {
-                    Login(authViewModel: authViewModel)
+                    Login(authState: authState)
                         .navigationBarBackButtonHidden(true)
                 } label: {
                     Text("Click here to Log In")
@@ -80,5 +82,5 @@ struct Signup: View {
 }
 
 #Preview {
-    Signup(authViewModel: AuthViewModel())
+    Signup(authState: AuthState())
 }

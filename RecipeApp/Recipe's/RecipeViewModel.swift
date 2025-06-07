@@ -10,9 +10,9 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class RecipeViewModel {
-    let authViewModel: AuthViewModel
-    init(authViewModel: AuthViewModel) {
-        self.authViewModel = authViewModel
+    let authState: AuthState
+    init(authState: AuthState) {
+        self.authState = authState
     }
     
     func threadCheck(in section: String) {
@@ -38,22 +38,22 @@ class RecipeViewModel {
             
             threadCheck(in: "updating recipeList")
             
-            for recipe in authViewModel.recipeList {
+            for recipe in self.authState.recipeList {
                 if title == recipe.title {
                     print("func updateFirestoreRecipes(): recipe already exists")
                     break
                 }
             }
-            authViewModel.recipeList.append(recipeModel)
+            self.authState.recipeList.append(recipeModel)
         }
         
         threadCheck(in: "after updating recipeList")
         
-        guard let userId = authViewModel.currentUser?.id else {
+        guard let userId = authState.currentUser?.id else {
             print("updateFirestoreRecipes(): user not logged in")
             return
         }
-        let userRef = authViewModel.databaseRef.collection("users").document(userId)
+        let userRef = authState.databaseRef.collection("users").document(userId)
         let userRecipesRef = userRef.collection("Recipes").document(title)
         do {
             let recipeDoc = try await userRecipesRef.getDocument()
