@@ -29,11 +29,11 @@ extension AuthViewModel: ViewRecipeViewModel {
             for recipe in recipeListSnapshot.documents {
                 let recipeData = recipe.data()
                 let decodedRecipe = try Firestore.Decoder().decode(RecipeModel.self, from: recipeData)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     
-                    self.threadCheck(in: "updating recipeList")
+                    threadCheck(in: "updating recipeList")
                     
-                    self.recipeList.append(decodedRecipe)
+                    recipeList.append(decodedRecipe)
                 }
             }
             

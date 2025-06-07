@@ -53,11 +53,11 @@ extension AuthViewModel: AuthViewModelExtension {
             /// Return if user already exists
             guard userDocSnapshot.isEmpty else {
                 print("user exists")
-                DispatchQueue.main.async {
+                await MainActor.run {
                     
-                    self.threadCheck(in: "updating userExists")
+                    threadCheck(in: "updating userExists")
                     
-                    self.userExists = true
+                    userExists = true
                 }
                 return
             }
@@ -68,11 +68,11 @@ extension AuthViewModel: AuthViewModelExtension {
             
             /// Create instance of user in memory
             let userModel = AuthModel(id: user.user.uid, email: email, username: username)
-            DispatchQueue.main.async {
+            await MainActor.run {
                 
-                self.threadCheck(in: "updating currentUser")
+                threadCheck(in: "updating currentUser")
                 
-                self.currentUser = userModel
+                currentUser = userModel
             }
             
             /// Add user into Firestore Database in JSON format
@@ -107,11 +107,11 @@ extension AuthViewModel: AuthViewModelExtension {
                let authData = data["AuthenticationData"] as? [String: Any] {
                 let username = authData["username"] as? String
                 let userModel = AuthModel(id: user.user.uid, email: email, username: username ?? "")
-                DispatchQueue.main.async {
+                await MainActor.run {
                     
-                    self.threadCheck(in: "updating currentUser")
+                    threadCheck(in: "updating currentUser")
                     
-                    self.currentUser = userModel
+                    currentUser = userModel
                 }
             } else {
                 print("func logIn(): AuthData doesnt exist")
