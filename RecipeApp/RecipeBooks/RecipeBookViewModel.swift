@@ -34,9 +34,9 @@ class RecipeBookViewModel {
                                          recipeTitles: recipe)
         
         /// add recipe book to recipe book list in the main thread for a quick display
-        DispatchQueue.main.async {
+        await MainActor.run {
             
-            self.threadCheck(in: "updating recipeBookList")
+            threadCheck(in: "updating recipeBookList")
             
             for recBook in self.authState.recipeBookList {
                 if recBook.bookTitle == book {

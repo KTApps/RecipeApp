@@ -34,9 +34,9 @@ class RecipeViewModel {
                                       calories: calories,
                                       category: category)
         
-        DispatchQueue.main.async {
+        await MainActor.run {
             
-            self.threadCheck(in: "updating recipeList")
+            threadCheck(in: "updating recipeList")
             
             for recipe in self.authState.recipeList {
                 if title == recipe.title {

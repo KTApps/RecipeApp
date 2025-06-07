@@ -38,11 +38,11 @@ extension AuthState: ViewRecipeBookViewModel {
             for recBook in recipeBooksSnapshot.documents {
                 let recBookData = recBook
                 let decodedRecBook = try Firestore.Decoder().decode(RecipeBookModel.self, from: recBookData)
-                DispatchQueue.main.async {
+                await MainActor.run {
                     
-                    self.threadCheck(in: "updating recipeBookList")
+                    threadCheck(in: "updating recipeBookList")
                     
-                    self.recipeBookList.append(decodedRecBook)
+                    recipeBookList.append(decodedRecBook)
                 }
             }
             
